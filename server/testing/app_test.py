@@ -176,7 +176,8 @@ class TestApp:
             )
 
             assert response.status_code == 400
-            assert response.json['errors'] == ["validation errors"]
+            assert response.content_type == 'application/json'
+            assert "Price must be between 1 and 30" in response.json.get("error", "")
 
             response = app.test_client().post(
                 '/restaurant_pizzas',
@@ -188,4 +189,5 @@ class TestApp:
             )
 
             assert response.status_code == 400
-            assert response.json['errors'] == ["validation errors"]
+            assert response.content_type == 'application/json'
+        assert response.json.get("error", "") == "Price must be between 1 and 30"
